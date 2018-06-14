@@ -24,8 +24,9 @@ router.post("/create", upload.single("avatarSource"), async (req, res) => {
   }
 });
 router.get("/show", async (req, res) => {
+  console.log("req.body", req.body.userId);
   try {
-    const data = await uploadapi.getUploadData();
+    const data = await uploadapi.getUploadData(req.body.userId);
     if (data.length) {
       console.log("data", data);
       res.send(data);

@@ -11,15 +11,16 @@ module.exports = {
       });
     });
   },
-  getUploadData: function() {
+  getUploadData: function(data) {
     return new Promise((resolve, reject) => {
-      UserDB.find({}, (err, result) => {
-        if (result.length) {
-          resolve(result);
-        } else {
-          reject(err);
-        }
-      });
+      UserDB.find({ userId: data })
+        .sort({ _id: -1 })
+        .then(response => {
+          resolve(response);
+        })
+        .catch(Error => {
+          console.log("error");
+        });
     });
   }
 };

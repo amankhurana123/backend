@@ -6,6 +6,11 @@ const postData = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "categories",
     required: true
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "registers",
+    require: true
   }
 });
 module.exports = mongoose.model("posts", postData);
