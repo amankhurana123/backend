@@ -24,11 +24,11 @@ router.post("/create", upload.single("avatarSource"), async (req, res) => {
   }
 });
 router.get("/show", async (req, res) => {
-  console.log("req.body", req.body.userId);
+  console.log("req.parrams", JSON.parse(req.query.params));
   try {
-    const data = await uploadapi.getUploadData(req.body.userId);
+    const data = await uploadapi.getUploadData(JSON.parse(req.query.params));
     if (data.length) {
-      console.log("data", data);
+      console.log("user post", data);
       res.send(data);
     }
   } catch (error) {

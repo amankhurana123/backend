@@ -13,13 +13,13 @@ module.exports = {
   },
   getUploadData: function(data) {
     return new Promise((resolve, reject) => {
-      UserDB.find({ userId: data })
+      UserDB.find({ userId: data.userId })
         .sort({ _id: -1 })
         .then(response => {
           resolve(response);
         })
         .catch(Error => {
-          console.log("error");
+          resolve("error");
         });
     });
   }

@@ -25,7 +25,7 @@ app.get("/test", (req, res) => {
   res.send("testing");
 });
 app.use("/show", route);
-// app.use('/',router2);
+app.use("/showPost", router2);
 app.use("/category", router3);
 app.listen(3002, () => {
   console.log("server is running .....");

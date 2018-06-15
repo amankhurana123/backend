@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const showPost = mongoose.Schema({
-  like: { type: String },
-  comment: { type: String },
+  like: { type: Number },
+  comment: { type: Array },
   postId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "posts",
