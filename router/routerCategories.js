@@ -16,16 +16,22 @@ router.post("/add", upload.single("avatarSource"), async function(
   response
 ) {
   const userData = request.body;
-  console.log("userData", userData);
   console.log("requestFile", request.file);
   userData.avatarSource = request.file.originalname;
   console.log("user", userData);
   try {
-    const data = await addCategoriesApi.addnew(userData);
-    console.log("add Categories", data);
-    const dataget = await addCategoriesApi.viewCategories();
-    console.log("data", dataget);
-    response.send(dataget);
+    const verifyCategory = await addCategoriesApi.verifyCategory(
+      userData.category
+    );
+    console.log("verifyCategory", verifyCategory);
+    if (!verifyCategory) {
+      const data = await addCategoriesApi.addnew(userData);
+      console.log("data", data);
+      response.send(data);
+    } else {
+      console.log("Category is already exists");
+      response.send("Category is already exists");
+    }
   } catch (err) {
     console.log(err);
     response.send(err);

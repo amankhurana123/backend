@@ -18,8 +18,8 @@ module.exports = {
         .then(response => {
           resolve(response);
         })
-        .catch(Error => {
-          resolve("error");
+        .catch(error => {
+          resolve("error", error);
         });
     });
   }

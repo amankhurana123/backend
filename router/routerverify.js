@@ -7,12 +7,18 @@ router.post("/verify", async function(request, response) {
 
   try {
     const verifyUser = await verifyUserApi.verifyUser(verifyData);
-    if (verifyUser.length != 0) {
-      console.log("you will sccuesfully login", verifyUser);
+
+    console.log(verifyUser);
+    if (typeof verifyUser == "object") {
       response.status(200).send(verifyUser);
+    } else if (verifyUser == "Please enter the correct password") {
+      response.send(verifyUser);
+    } else {
+      response.send(verifyUser);
     }
   } catch (err) {
     console.error("error", err);
   }
 });
+
 module.exports = router;

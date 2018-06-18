@@ -21,5 +21,17 @@ module.exports = {
         }
       });
     });
+  },
+  verifyCategory: data => {
+    return new Promise((resolve, reject) => {
+      userDB.findOne({ category: data }, (error, result) => {
+        if (!result) {
+          console.log("verify category data,", result);
+          resolve(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 };

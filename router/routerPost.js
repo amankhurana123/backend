@@ -14,6 +14,7 @@ let upload = multer({ storage: storage });
 router.post("/create", upload.single("avatarSource"), async (req, res) => {
   const post = req.body;
   post.avatarSource = req.file.filename;
+  p;
   console.log("post is", post);
   try {
     const upload = await uploadapi.uploadPost(post);
