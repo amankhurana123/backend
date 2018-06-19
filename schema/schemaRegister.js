@@ -7,7 +7,7 @@ const userData = mongoose.Schema({
   email: { type: String },
   firstName: { type: String },
   lastName: { type: String },
-  verificationCode: { type: String },
+  verificationCode: { type: Number },
   verificationStatus: { type: Boolean, default: false }
 });
 userData.methods.generateHash = function(password) {

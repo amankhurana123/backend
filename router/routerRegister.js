@@ -15,9 +15,7 @@ let storage = multer.diskStorage({
   }
 });
 let upload = multer({ storage: storage });
-router.post("/test", (req, res) => {
-  res.send("post test called");
-});
+
 router.post(
   "/create",
   upload.single("avatarSource"),
@@ -47,11 +45,28 @@ router.post(
 );
 router.post("/verifyCode", async (req, res) => {
   const userData = req.body;
+  console.log("verifyCode", userData);
   try {
-    const dataBack = await userRegisterApi.verificationCode(userData);
+    const dataBack = await userRegisterApi.verifyCode(userData);
     if (dataBack) {
       response.send(dataBack);
     }
   } catch (error) {}
+});
+router.post("/resendCode", async (req, res) => {
+  const userData = req.body;
+
+  userData.verificationCode = Math.floor(Math.random() * 1000000);
+
+  try {
+    const verifyUsers = await userRegisterApi.verifyCodeResend(userData);
+    if (verifyUsers.length != 0) {
+      const mail = await mailerapi.sendMail(userData);
+      console.log("mail", mail);
+      res.send("mail is sent");
+    }
+  } catch (error) {
+    console.log("userData", userData);
+  }
 });
 module.exports = router;
