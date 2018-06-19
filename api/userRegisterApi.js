@@ -21,5 +21,48 @@ module.exports = {
         }
       });
     });
+  },
+  verifyCode: data => {
+    return new Promise((resolve, reject) => {
+      userDB
+        .findOneAndUpdate(
+          {
+            $and: [
+              {
+                email: data.email,
+                verificationCode: data.verificationCode
+              }
+            ]
+          },
+          { $set: { verificationStatus: true } }
+        )
+        .then(response => {
+          console.log("repsonse<><><><><><><><><><><><><", response);
+          resolve(response);
+        })
+        .catch(error => {
+          console.log("error", error);
+          reject(error);
+        });
+    });
+  },
+  verifyCodeResend: data => {
+    return new Promise((resolve, reject) => {
+      userDB
+        .findOneAndUpdate(
+          {
+            email: data.email
+          },
+          { $set: { verificationCode: data.verificationCode } }
+        )
+        .then(response => {
+          console.log("repsonse", response);
+          resolve(response);
+        })
+        .catch(error => {
+          console.log("error", error);
+          reject(error);
+        });
+    });
   }
 };

@@ -1,45 +1,33 @@
-const express=require('express');
-const router=express.Router();
-const uploadapi=require("../api/uploadapi");
-const multer=require('multer');
-let storage= multer.diskStorage({
-	destination: function(req, file, cb){
-		cb(null,"./upload")
-	}, 
-	filename: function(req,file,cb){
-		cb(null, file.originalname)
-	}
+const express = require("express");
+const router = express.Router();
+const showPost = require("../api/showPostapi");
+router.post("/post", async (req, res) => {
+  const postData = req.body;
+  console.log("postData", postData);
+  try {
+    const post = await showPost.addLikeAndComment(postData);
+    if (post.length) {
+      console.log("post", post);
+      res.send("'response send");
+    }
+  } catch (errot) {
+    console.log("error", error);
+  }
 });
-let upload=multer({storage: storage});
-router.post('/upload',upload.single("thumbnail"),async function(request,response){
-    console.log("request body", request.body);
-    console.log("req.file",request.file);
-    try{
-        const upload=await uploadapi.uploadPost(request.body);
-        response.send(upload);
-        console.log(upload);
-    }
-    catch(err){
-        console.error({Error: err});
-    }
-})
-router.post('/uploadPost',async function(request,response){
-    //console.log("requestBody", request.body);
-    try{
-        let appp=await uploadapi.getUploadedData();
-        if(appp.length === 0){
-            response.send(appp);
-            console.log(app);
-        }
-        else{
-            response.send(appp);
-            console.log(app);
-        }
-    }
-    catch(err){
-        console.log(err);
-    }
-})
+router.get("/show", async (req, res) => {
+  console.log("req.params in show post", JSON.parse(req.query.params));
+  try {
+    const data = await showPost.getpost(JSON.parse(req.query.params));
+    if (data.length) {
+      console.log(data);
+      res.send(data);
+    } else {
+      console.log("data not found", data);
 
-
-module.exports=router;
+      res.send("data not found");
+    }
+  } catch (error) {
+    console.log("error", error);
+  }
+});
+module.exports = router;
