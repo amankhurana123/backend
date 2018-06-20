@@ -60,13 +60,52 @@ router.post("/resendCode", async (req, res) => {
 
   try {
     const verifyUsers = await userRegisterApi.verifyCodeResend(userData);
-    if (verifyUsers.length != 0) {
+    console.log(":::::::::::::::::", verifyUsers.length);
+    if (verifyUsers) {
+      userData.path = "ppl";
       const mail = await mailerapi.sendMail(userData);
       console.log("mail", mail);
       res.send("mail is sent");
     }
   } catch (error) {
-    console.log("userData", userData);
+    console.log("userData error", error);
+  }
+});
+router.get("/ppl/:email", (req, res) => {
+  console.log(
+    `:::::::::::::::::::::::::>>> ppl://verification?${encodeURI(
+      JSON.stringify(req.params)
+    )}`
+  );
+  res.redirect(
+    `ppl://VerificationCode?email=${encodeURI(JSON.stringify(req.params))}`
+  );
+});
+router.get("/resendPassword/:email", (req, res) => {
+  console.log(
+    `:::::::::::::::::::::::::>>> ppl://NewPassword?${encodeURI(
+      JSON.stringify(req.params)
+    )}`
+  );
+  res.redirect(
+    `ppl://NewPassword?email=${encodeURI(JSON.stringify(req.params))}`
+  );
+});
+router.post("/forgotPassword", async (req, res) => {
+  const user = req.body;
+  user.verificationCode = Math.floor(Math.random() * 1000000);
+
+  user.path = "resendPassword";
+  console.log("console", user);
+  try {
+    const userPassword = await userRegisterApi.forgotPassword(user);
+    if (typeof userPassword == "object") {
+      console.log("userPassword", userPassword);
+      const mail = await mailerapi.sendMail(user);
+      res.send(user);
+    }
+  } catch (error) {
+    console.log("error>>>>", error);
   }
 });
 module.exports = router;

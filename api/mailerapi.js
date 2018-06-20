@@ -18,7 +18,9 @@ module.exports = {
       subject: "you are sccuessfully log in",
       html: `<h3>Hello, You got the mail for verifications.Your verification code is ${
         data.verificationCode
-      }. Please enter the vertication code to confirm your status.</h3> <a href=http://192.168.100.44:8081/VerificationCode target="_bottom">Cleck here</a>`
+      }. Please enter the vertication code to confirm your status.</h3> <a href="http://192.168.43.192:3002/user1/${
+        data.path
+      }/${data.email}" target="_bottom">Cleck here</a>`
     };
 
     console.log("mailer data", data);

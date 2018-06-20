@@ -34,10 +34,11 @@ module.exports = {
               }
             ]
           },
-          { $set: { verificationStatus: true } }
+          { $set: { verificationStatus: true } },
+          { new: true }
         )
         .then(response => {
-          console.log("repsonse<><><><><><><><><><><><><", response);
+          console.log("repsonse ::::::::::::::::::", response);
           resolve(response);
         })
         .catch(error => {
@@ -53,14 +54,38 @@ module.exports = {
           {
             email: data.email
           },
-          { $set: { verificationCode: data.verificationCode } }
+          { $set: { verificationCode: data.verificationCode } },
+          { new: true }
         )
         .then(response => {
-          console.log("repsonse", response);
+          console.log("repsonse>>>>>>>>>>>>>>>>.", response);
           resolve(response);
         })
         .catch(error => {
-          console.log("error", error);
+          console.log("error<<<<<<<<<<<<<<<<<<<<<<<", error);
+          reject(error);
+        });
+    });
+  },
+  forgotPassword: data => {
+    return new Promise((resolve, reject) => {
+      userDB
+        .findOneAndUpdate(
+          { email: data.email },
+          {
+            $set: {
+              verificationCode: data.verificationCode,
+              verificationStatus: false
+            }
+          },
+          { new: true }
+        )
+        .then(response => {
+          console.log("response>>>>>>>>>>>>>>>>>>>>>>", response);
+          resolve(response);
+        })
+        .catch(error => {
+          console.log("error<<<<<<<<<<<<<<<<<<<<<<<<<<", error);
           reject(error);
         });
     });
